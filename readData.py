@@ -1,32 +1,20 @@
-import zipfile
-import numpy as np
 import torch
+from torch.utils.data import DataLoader
+from torchvision import transforms, datasets
 
-
-# load data and labels from zipfile, and store in numpy arrays
+# load the image data and labels into lists of tensors
 def load_data(path):
-    with zipfile.ZipFile('data.zip') as data:
-        data_file = data.open(path)
-    images = []
+    transformer = transforms.Compose([transforms.Resize((255, 255)), transforms.ToTensor()]) # resize image, 255 chosen at random atm
+    dataset = datasets.ImageFolder(path, transform = transformer)
+    dataloader = DataLoader(dataset, batch_size = 250, num_workers = 8, pin_memory=True) # num_worker for parallel, pin_memory should improve speed lateron
+
+    data = []
     labels = []
-    for idx, line in enumerate(data_file):
-        if idx == 0:
-            continue
-        line = str(line)[:-3]
-        image = line.split(',')
-        labels.append(int(image[0][2:]))
-        image = list(map(int, image[1:]))
-        images.append(image)
-    return np.array(images).reshape(len(images), 1, 28, 28), np.array(labels)
-
-
-# load data, change data to floats and get data to gpu (if cuda available)
-def get_data(path):
-    data, labels = load_data(path)
-    data = torch.from_numpy(data)
-    labels = torch.from_numpy(labels)
-    data = data.float()
-    if torch.cuda.is_available():
-        data = data.cuda()
-        labels = labels.cuda()
+    for image_batch, label_batch in dataloader:
+        if torch.cuda.is_available():               # transfer data to gpu
+            image_batch = image_batch.cuda()
+            label_batch = label_batch.cuda()
+        data.append(image_batch)
+        labels.append(label_batch)
+    
     return data, labels
