@@ -14,6 +14,7 @@ if __name__ == '__main__':
     data, labels = load_data('data', num_workers=6)  # all data, divided into batches
     # show_image(data, labels, 0, 0)
     print('data loaded')
-    run_generator()
 
-    # run_discriminator(data[0][0])
+    image = run_generator()
+
+    run_discriminator(image)

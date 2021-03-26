@@ -17,9 +17,11 @@ def weights_init(m):
 
 def show_image(generator, fixed_noise):
     generated_img = generator(fixed_noise).cpu().detach()
+    print(generated_img.size())
 
     plt.imshow(generated_img.squeeze().permute(1, 2, 0))
     plt.show()
+    return generated_img
 
 
 def run_generator():
@@ -35,7 +37,7 @@ def run_generator():
 
     # Apply the weights_init function to randomly initialize all weights
     #  to mean=0, stdev=0.2.
-    fixed_noise = torch.randn(1, NC, 1, 1, device=device)
+    fixed_noise = torch.randn(1, NZ, 1, 1, device=device)
     # # fixed_noise = torch.randn(64, 64, 1, 1, device=device)
     # optimizer_generator = Adam(generator.parameters())
     # criterion = nn.BCELoss()
@@ -45,7 +47,8 @@ def run_generator():
     # Print the model
     print(generator)
 
-    show_image(generator, fixed_noise)
+    return show_image(generator, fixed_noise)
+
 
 
 def run_discriminator(input):
@@ -55,10 +58,6 @@ def run_discriminator(input):
     print(device)
     discriminator = Discriminator().to(device)
 
-    # Apply the weights_init function to randomly initialize all weights
-    #  to mean=0, stdev=0.2.
-    fixed_noise = torch.randn(1, NC, 1, 1, device=device)
-    # fixed_noise = torch.randn(64, 64, 1, 1, device=device)
     # optimizer_generator = Adam(generator.parameters())
     # criterion = nn.BCELoss()
 
@@ -67,8 +66,8 @@ def run_discriminator(input):
     # Print the model
     print(discriminator)
 
-    vector = discriminator(input).cpu().detach()
-    print(vector)
+    vector = discriminator(input)
+    print('output of discriminator is:', vector.item())
 
 
 

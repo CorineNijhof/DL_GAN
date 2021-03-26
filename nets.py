@@ -9,13 +9,13 @@ NGF = 512
 # Size of feature maps in discriminator
 NDF = 512
 
-class Generator(nn.Module):
 
+class Generator(nn.Module):
     def __init__(self):
         super(Generator, self).__init__()
 
         self.layers = nn.Sequential(
-            # input is Z, going into a convolution
+            # input is latent vector, going into a convolution
             nn.ConvTranspose2d(NZ, NGF * 8, 4, 8, 0, bias=False),
             nn.BatchNorm2d(NGF * 8),
             nn.ReLU(True),
@@ -32,7 +32,7 @@ class Generator(nn.Module):
             nn.BatchNorm2d(NGF),
             nn.ReLU(True),
             # state size. (NGF) x ? x ?
-            nn.ConvTranspose2d(NGF, NC, 4, 2, 0, bias=False),
+            nn.ConvTranspose2d(NGF, NC, 4, 2, 1, bias=False),
             nn.Tanh()
             # state size. (NC) x 512 x 512
         )
@@ -47,7 +47,7 @@ class Discriminator(nn.Module):
 
         self.layers = nn.Sequential(
             # input is (NC) x 512 x 512
-            nn.Conv2d(in_channels=NC, out_channels=NDF, kernel_size=4, stride=2, padding=0, bias=False),
+            nn.Conv2d(in_channels=NC, out_channels=NDF, kernel_size=4, stride=2, padding=1, bias=False),
             nn.LeakyReLU(0.2, inplace=True),
             # state size. (NDF) x ? x ?
             nn.Conv2d(NDF, NDF * 2, 4, 4, 0, bias=False),
