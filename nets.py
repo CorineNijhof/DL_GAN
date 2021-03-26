@@ -8,15 +8,30 @@ class Generator(Module):
         super(Generator, self).__init__()
         # self.ngpu = ngpu
 
+        # Number of channels in the training images. For color images this is 3
+        nc = 3
+
         # Size of z latent vector (i.e. size of generator input)
-        nz = 64
+        nz = 100
 
         # Size of feature maps in generator
-        ngf = 64
+        ngf = 512
 
         self.layers = nn.Sequential(
             # input is Z, going into a convolution
-            nn.ConvTranspose2d(nz, ngf * 8, 4, 1, 0, bias=False),
+            nn.ConvTranspose2d(nz, ngf * 64, 4, 1, 0, bias=False),
+            nn.BatchNorm2d(ngf * 64),
+            nn.ReLU(True),
+
+            nn.ConvTranspose2d(ngf * 64, ngf * 32, 4, 2, 1, bias=False),
+            nn.BatchNorm2d(ngf * 32),
+            nn.ReLU(True),
+
+            nn.ConvTranspose2d(ngf * 32, ngf * 16, 4, 2, 1, bias=False),
+            nn.BatchNorm2d(ngf * 16),
+            nn.ReLU(True),
+
+            nn.ConvTranspose2d(ngf * 16, ngf * 8, 4, 2, 1, bias=False),
             nn.BatchNorm2d(ngf * 8),
             nn.ReLU(True),
             # state size. (ngf*8) x 4 x 4
@@ -32,7 +47,7 @@ class Generator(Module):
             nn.BatchNorm2d(ngf),
             nn.ReLU(True),
             # state size. (ngf) x 32 x 32
-            nn.ConvTranspose2d(ngf, 3, 4, 2, 1, bias=False),
+            nn.ConvTranspose2d(ngf, nc, 4, 2, 1, bias=False),
             nn.Tanh()
             # state size. (nc) x 64 x 64
         )
@@ -49,11 +64,11 @@ class Discriminator(nn.Module):
         # Number of channels in the training images. For color images this is 3
         nc = 3
         # Size of feature maps in discriminator
-        ndf = 64
+        ndf = 255
 
         self.layers = nn.Sequential(
-            # input is (nc) x 64 x 64
-            nn.Conv2d(nc, ndf, 4, 2, 1, bias=False),
+            # input is (nc) x 255 x 255
+            nn.Conv2d(in_channels=nc, out_channels=ndf, kernel_size=4, stride=2, padding=1, bias=False),
             nn.LeakyReLU(0.2, inplace=True),
             # state size. (ndf) x 32 x 32
             nn.Conv2d(ndf, ndf * 2, 4, 2, 1, bias=False),

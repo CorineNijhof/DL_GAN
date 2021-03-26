@@ -4,20 +4,20 @@ from torchvision import transforms, datasets
 
 
 # load the image data and labels into lists of tensors
-def load_data(path, batch_size=135):
+def load_data(path, batch_size=135, num_workers=8):
     torch.manual_seed(1)
     # resize image, 255 chosen at random atm
-    transformer = transforms.Compose([transforms.Resize((64, 64)), transforms.ToTensor()])
+    transformer = transforms.Compose([transforms.Resize((512, 512)), transforms.ToTensor()])
     dataset = datasets.ImageFolder(path, transform=transformer)
     # num_worker for parallel, pin_memory should improve speed later on
-    dataloader = DataLoader(dataset, batch_size=batch_size, num_workers=8, pin_memory=True, shuffle=True)
+    dataloader = DataLoader(dataset, batch_size=batch_size, num_workers=num_workers, pin_memory=True, shuffle=True)
 
     data = []
     labels = []
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     for image_batch, label_batch in dataloader:
         # transfer data to gpu
-        image_batch = image_batch.cuda(device)
+        image_batch = image_batch.to(device)
         label_batch = label_batch.to(device)
 
         data.append(image_batch)

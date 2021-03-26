@@ -10,6 +10,6 @@ def show_image(data_, labels_, batch, idx):
 
 
 if __name__ == '__main__':
-    data, labels = load_data('data')  # all data, divided into batches
-    # show_image(data, labels, 0, 0)
+    data, labels = load_data('data', num_workers=6)  # all data, divided into batches
+    show_image(data, labels, 0, 0)
     print('data loaded')

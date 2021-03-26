@@ -35,7 +35,7 @@ def run_generator():
 
     # Apply the weights_init function to randomly initialize all weights
     #  to mean=0, stdev=0.2.
-    fixed_noise = torch.randn(1, 64, 1, 1, device=device)
+    fixed_noise = torch.randn(1, 100, 1, 1, device=device)
     # fixed_noise = torch.randn(64, 64, 1, 1, device=device)
 
     optimizer_generator = Adam(generator.parameters())
