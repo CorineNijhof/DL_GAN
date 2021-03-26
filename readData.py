@@ -9,6 +9,8 @@ def load_data(path, batch_size=135, num_workers=8):
     # resize image, 255 chosen at random atm
     transformer = transforms.Compose([transforms.Resize((512, 512)), transforms.ToTensor()])
     dataset = datasets.ImageFolder(path, transform=transformer)
+    n_images = len(dataset)
+    print('number of images:', n_images)
     # num_worker for parallel, pin_memory should improve speed later on
     dataloader = DataLoader(dataset, batch_size=batch_size, num_workers=num_workers, pin_memory=True, shuffle=True)
 
@@ -23,4 +25,4 @@ def load_data(path, batch_size=135, num_workers=8):
         data.append(image_batch)
         labels.append(label_batch)
     
-    return data, labels
+    return data, labels, n_images

@@ -1,6 +1,7 @@
 from readData import load_data
 import matplotlib.pyplot as plt
 from run_nets import run_generator, run_discriminator
+from train import train
 
 
 # just to show an image to show it is working, can be deleted at some point
@@ -11,10 +12,12 @@ def show_image(data_, labels_, batch, idx):
 
 
 if __name__ == '__main__':
-    data, labels = load_data('data', num_workers=6)  # all data, divided into batches
+    batch_size = 135
+    data, labels, num_images = load_data('data', batch_size=batch_size, num_workers=6)  # all data, divided into batches
     # show_image(data, labels, 0, 0)
     print('data loaded')
 
-    image = run_generator()
+    # image = run_generator()
+    # run_discriminator(image)
 
-    run_discriminator(image)
+    train(data, num_images=num_images, batch_size=batch_size)
