@@ -1,55 +1,40 @@
-from torch.nn import Module
 import torch.nn as nn
 
+# Number of channels in the training images. For color images this is 3
+NC = 3
+# Size of z latent vector (i.e. size of generator input)
+NZ = 100
+# Size of feature maps in generator
+NGF = 512
+# Size of feature maps in discriminator
+NDF = 512
 
-class Generator(Module):
+class Generator(nn.Module):
 
     def __init__(self):
         super(Generator, self).__init__()
-        # self.ngpu = ngpu
-
-        # Number of channels in the training images. For color images this is 3
-        nc = 3
-
-        # Size of z latent vector (i.e. size of generator input)
-        nz = 100
-
-        # Size of feature maps in generator
-        ngf = 512
 
         self.layers = nn.Sequential(
             # input is Z, going into a convolution
-            nn.ConvTranspose2d(nz, ngf * 64, 4, 1, 0, bias=False),
-            nn.BatchNorm2d(ngf * 64),
+            nn.ConvTranspose2d(NZ, NGF * 8, 4, 8, 0, bias=False),
+            nn.BatchNorm2d(NGF * 8),
             nn.ReLU(True),
-
-            nn.ConvTranspose2d(ngf * 64, ngf * 32, 4, 2, 1, bias=False),
-            nn.BatchNorm2d(ngf * 32),
+            # state size. (NGF*8) x ? x ?
+            nn.ConvTranspose2d(NGF * 8, NGF * 4, 4, 4, 0, bias=False),
+            nn.BatchNorm2d(NGF * 4),
             nn.ReLU(True),
-
-            nn.ConvTranspose2d(ngf * 32, ngf * 16, 4, 2, 1, bias=False),
-            nn.BatchNorm2d(ngf * 16),
+            # state size. (NGF*4) x ? x ?
+            nn.ConvTranspose2d(NGF * 4, NGF * 2, 4, 4, 0, bias=False),
+            nn.BatchNorm2d(NGF * 2),
             nn.ReLU(True),
-
-            nn.ConvTranspose2d(ngf * 16, ngf * 8, 4, 2, 1, bias=False),
-            nn.BatchNorm2d(ngf * 8),
+            # state size. (NGF*2) x ? x ?
+            nn.ConvTranspose2d(NGF * 2, NGF, 4, 4, 0, bias=False),
+            nn.BatchNorm2d(NGF),
             nn.ReLU(True),
-            # state size. (ngf*8) x 4 x 4
-            nn.ConvTranspose2d(ngf * 8, ngf * 4, 4, 2, 1, bias=False),
-            nn.BatchNorm2d(ngf * 4),
-            nn.ReLU(True),
-            # state size. (ngf*4) x 8 x 8
-            nn.ConvTranspose2d(ngf * 4, ngf * 2, 4, 2, 1, bias=False),
-            nn.BatchNorm2d(ngf * 2),
-            nn.ReLU(True),
-            # state size. (ngf*2) x 16 x 16
-            nn.ConvTranspose2d(ngf * 2, ngf, 4, 2, 1, bias=False),
-            nn.BatchNorm2d(ngf),
-            nn.ReLU(True),
-            # state size. (ngf) x 32 x 32
-            nn.ConvTranspose2d(ngf, nc, 4, 2, 1, bias=False),
+            # state size. (NGF) x ? x ?
+            nn.ConvTranspose2d(NGF, NC, 4, 2, 0, bias=False),
             nn.Tanh()
-            # state size. (nc) x 64 x 64
+            # state size. (NC) x 512 x 512
         )
 
     def forward(self, input):
@@ -57,33 +42,27 @@ class Generator(Module):
 
 
 class Discriminator(nn.Module):
-    def __init__(self, ngpu):
+    def __init__(self):
         super(Discriminator, self).__init__()
-        # self.ngpu = ngpu
-
-        # Number of channels in the training images. For color images this is 3
-        nc = 3
-        # Size of feature maps in discriminator
-        ndf = 255
 
         self.layers = nn.Sequential(
-            # input is (nc) x 255 x 255
-            nn.Conv2d(in_channels=nc, out_channels=ndf, kernel_size=4, stride=2, padding=1, bias=False),
+            # input is (NC) x 512 x 512
+            nn.Conv2d(in_channels=NC, out_channels=NDF, kernel_size=4, stride=2, padding=0, bias=False),
             nn.LeakyReLU(0.2, inplace=True),
-            # state size. (ndf) x 32 x 32
-            nn.Conv2d(ndf, ndf * 2, 4, 2, 1, bias=False),
-            nn.BatchNorm2d(ndf * 2),
+            # state size. (NDF) x ? x ?
+            nn.Conv2d(NDF, NDF * 2, 4, 4, 0, bias=False),
+            nn.BatchNorm2d(NDF * 2),
             nn.LeakyReLU(0.2, inplace=True),
-            # state size. (ndf*2) x 16 x 16
-            nn.Conv2d(ndf * 2, ndf * 4, 4, 2, 1, bias=False),
-            nn.BatchNorm2d(ndf * 4),
+            # state size. (NDF*2) x ? x ?
+            nn.Conv2d(NDF * 2, NDF * 4, 4, 4, 0, bias=False),
+            nn.BatchNorm2d(NDF * 4),
             nn.LeakyReLU(0.2, inplace=True),
-            # state size. (ndf*4) x 8 x 8
-            nn.Conv2d(ndf * 4, ndf * 8, 4, 2, 1, bias=False),
-            nn.BatchNorm2d(ndf * 8),
+            # state size. (NDF*4) x ? x ?
+            nn.Conv2d(NDF * 4, NDF * 8, 4, 4, 0, bias=False),
+            nn.BatchNorm2d(NDF * 8),
             nn.LeakyReLU(0.2, inplace=True),
-            # state size. (ndf*8) x 4 x 4
-            nn.Conv2d(ndf * 8, 1, 4, 1, 0, bias=False),
+            # state size. (NDF*8) x ? x ?
+            nn.Conv2d(NDF * 8, 1, 4, 8, 0, bias=False),
             nn.Sigmoid()
         )
 

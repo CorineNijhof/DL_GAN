@@ -1,4 +1,4 @@
-from nets import Generator
+from nets import Generator, Discriminator, NC, NZ, NGF, NDF
 from torch.optim import Adam
 import torch.nn as nn
 import torch
@@ -35,11 +35,11 @@ def run_generator():
 
     # Apply the weights_init function to randomly initialize all weights
     #  to mean=0, stdev=0.2.
-    fixed_noise = torch.randn(1, 100, 1, 1, device=device)
-    # fixed_noise = torch.randn(64, 64, 1, 1, device=device)
+    fixed_noise = torch.randn(1, NC, 1, 1, device=device)
+    # # fixed_noise = torch.randn(64, 64, 1, 1, device=device)
+    # optimizer_generator = Adam(generator.parameters())
+    # criterion = nn.BCELoss()
 
-    optimizer_generator = Adam(generator.parameters())
-    criterion = nn.BCELoss()
     generator.apply(weights_init)
 
     # Print the model
@@ -48,4 +48,28 @@ def run_generator():
     show_image(generator, fixed_noise)
 
 
-run_generator()
+def run_discriminator(input):
+    # torch.cuda.is_available = lambda : False
+
+    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    print(device)
+    discriminator = Discriminator().to(device)
+
+    # Apply the weights_init function to randomly initialize all weights
+    #  to mean=0, stdev=0.2.
+    fixed_noise = torch.randn(1, NC, 1, 1, device=device)
+    # fixed_noise = torch.randn(64, 64, 1, 1, device=device)
+    # optimizer_generator = Adam(generator.parameters())
+    # criterion = nn.BCELoss()
+
+    discriminator.apply(weights_init)
+
+    # Print the model
+    print(discriminator)
+
+    vector = discriminator(input).cpu().detach()
+    print(vector)
+
+
+
+
