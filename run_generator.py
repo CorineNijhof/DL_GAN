@@ -1,4 +1,4 @@
-from generator import Generator
+from nets import Generator
 from torch.optim import Adam
 import torch.nn as nn
 import torch
