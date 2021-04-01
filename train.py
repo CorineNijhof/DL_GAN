@@ -9,7 +9,7 @@ from run_nets import weights_init
 NGPU = 0
 
 
-def train(data, num_images, batch_size, num_epochs=1):
+def train(dataloader, num_epochs=50):
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
     # Create the nets
@@ -52,16 +52,13 @@ def train(data, num_images, batch_size, num_epochs=1):
     D_losses = []
     iters = 0
 
-    num_batches = num_images / batch_size
-
     print("Starting Training Loop...")
     for epoch in range(num_epochs):
-        for batch in range(num_batches):
+        for i, data in enumerate(dataloader, 0):
             ## Train with all-real batch
             discriminator.zero_grad()
             # Format batch
-            # TODO: this is not correct yet probably, originally this was data[0]...
-            real_cpu = data[batch].to(device)
+            real_cpu = data[0].to(device)
             b_size = real_cpu.size(0)
             label = torch.full((b_size,), real_label, dtype=torch.float, device=device)
             # Forward pass real batch through D
@@ -106,9 +103,9 @@ def train(data, num_images, batch_size, num_epochs=1):
             optimizerG.step()
 
             # Output training stats
-            if batch % 50 == 0:
+            if i % 50 == 0:
                 print('[%d/%d][%d/%d]\tLoss_D: %.4f\tLoss_G: %.4f\tD(x): %.4f\tD(G(z)): %.4f / %.4f'
-                      % (epoch, num_epochs, batch, num_images,
+                      % (epoch, num_epochs, i, len(dataloader),
                          errD.item(), errG.item(), D_x, D_G_z1, D_G_z2))
 
             # Save Losses for plotting later
@@ -116,7 +113,7 @@ def train(data, num_images, batch_size, num_epochs=1):
             D_losses.append(errD.item())
 
             # Check how the generator is doing by saving its output on fixed_noise
-            if (iters % 500 == 0) or ((epoch == num_epochs - 1) and (batch == num_images - 1)):
+            if (iters % 500 == 0) or ((epoch == num_epochs - 1) and (i ==len(dataloader) - 1)):
                 with torch.no_grad():
                     fake = generator(fixed_noise).detach().cpu()
                 img_list.append(vutils.make_grid(fake, padding=2, normalize=True))

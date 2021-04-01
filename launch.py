@@ -13,11 +13,11 @@ def show_image(data_, labels_, batch, idx):
 
 if __name__ == '__main__':
     batch_size = 135
-    data, labels, num_images = load_data('data', batch_size=batch_size, num_workers=6)  # all data, divided into batches
+    dataloader, data, labels, num_images = load_data('data', batch_size=batch_size, num_workers=6)  # all data, divided into batches
     # show_image(data, labels, 0, 0)
     print('data loaded')
 
     # image = run_generator()
     # run_discriminator(image)
 
-    train(data, num_images=num_images, batch_size=batch_size)
+    train(dataloader, num_epochs=1)
