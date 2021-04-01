@@ -6,7 +6,7 @@ from nets import Generator, Discriminator, NZ
 from run_nets import weights_init
 
 # Number of GPUs available. Use 0 for CPU mode.
-NGPU = 0
+NGPU = 1
 
 
 def train(dataloader, num_epochs=5):

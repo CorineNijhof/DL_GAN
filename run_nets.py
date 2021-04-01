@@ -16,10 +16,10 @@ def weights_init(m):
 
 def show_image(generator, fixed_noise):
     generated_img = generator(fixed_noise).cpu().detach()
-    print(generated_img.size())
+    # print(generated_img.size())
 
-    plt.imshow(generated_img.squeeze().permute(1, 2, 0))
-    plt.show()
+    # plt.imshow(generated_img.squeeze().permute(1, 2, 0))
+    # plt.show()
     return generated_img
 
 
@@ -45,8 +45,8 @@ def run_generator():
 
     # Print the model
     print(generator)
-
-    return show_image(generator, fixed_noise)
+    return generator(fixed_noise)
+    # return show_image(generator, fixed_noise)
 
 
 
