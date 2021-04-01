@@ -9,7 +9,7 @@ from run_nets import weights_init
 NGPU = 0
 
 
-def train(dataloader, num_epochs=50):
+def train(dataloader, num_epochs=5):
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
     # Create the nets

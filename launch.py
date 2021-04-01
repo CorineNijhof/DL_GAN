@@ -20,4 +20,4 @@ if __name__ == '__main__':
     # image = run_generator()
     # run_discriminator(image)
 
-    train(dataloader, num_epochs=1)
+    train(dataloader)
