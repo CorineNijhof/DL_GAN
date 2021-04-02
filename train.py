@@ -2,14 +2,17 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 import torchvision.utils as vutils
+import numpy as np
+import matplotlib.pyplot as plt
 from nets import Generator, Discriminator, NZ
 from run_nets import weights_init
+
 
 # Number of GPUs available. Use 0 for CPU mode.
 NGPU = 1
 
 
-def train(dataloader, num_epochs=5):
+def train(dataloader, num_epochs=3):
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
     # Create the nets
@@ -25,8 +28,8 @@ def train(dataloader, num_epochs=5):
     discriminator.apply(weights_init)
 
     # Print the model
-    print(generator)
-    print(discriminator)
+    # print(generator)
+    # print(discriminator)
 
     # Initialize BCELoss function
     criterion = nn.BCELoss()
@@ -103,7 +106,7 @@ def train(dataloader, num_epochs=5):
             optimizerG.step()
 
             # Output training stats
-            if i % 50 == 0:
+            if i % 20 == 0:
                 print('[%d/%d][%d/%d]\tLoss_D: %.4f\tLoss_G: %.4f\tD(x): %.4f\tD(G(z)): %.4f / %.4f'
                       % (epoch, num_epochs, i, len(dataloader),
                          errD.item(), errG.item(), D_x, D_G_z1, D_G_z2))
@@ -116,6 +119,18 @@ def train(dataloader, num_epochs=5):
             if (iters % 500 == 0) or ((epoch == num_epochs - 1) and (i ==len(dataloader) - 1)):
                 with torch.no_grad():
                     fake = generator(fixed_noise).detach().cpu()
-                img_list.append(vutils.make_grid(fake, padding=2, normalize=True))
+                # img_list.append(vutils.make_grid(fake, padding=2, normalize=True))
+                img_list.append(fake)
 
             iters += 1
+            
+    print("finished")
+    for i in img_list:
+        print("x")
+    # print(img_list)
+    
+    print(img_list[-1][-1].size())
+    plt.imshow(np.transpose(img_list[-1][-1],(1,2,0)))
+    print(img_list[-1][-1].size())
+    # plt.plot(np.transpose(img_list[-1],(1,2,0)))
+    plt.savefig('fake_image_2.png')

@@ -18,6 +18,8 @@ class Generator(nn.Module):
         self.main = nn.Sequential(
             # input is Z, going into a convolution
             nn.ConvTranspose2d( nz, ngf * 16, 4, 1, 0, bias=False),
+            nn.BatchNorm2d(ngf * 16),
+            nn.ReLU(True),
             nn.ConvTranspose2d(ngf * 16, ngf * 8, 4, 2, 1, bias=False),
             nn.BatchNorm2d(ngf * 8),
             nn.ReLU(True),
@@ -98,6 +100,8 @@ class Discriminator(nn.Module):
             nn.LeakyReLU(0.2, inplace=True),
              # state size. (NDF*8) x ? x ?
             nn.Conv2d(NDF * 8, NDF * 16, 4, 2, 1, bias=False), #TOEGEVOEGD
+            nn.BatchNorm2d(NDF * 16),
+            nn.LeakyReLU(0.2, inplace=True),
             nn.Conv2d(NDF * 16, 1, 4, 1, 0, bias=False), 
             nn.Sigmoid()
         )
