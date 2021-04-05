@@ -43,7 +43,7 @@ def train(dataloader, num_epochs=5):
     fake_label = 0.
 
     # learning_rate = 0.0002
-    learning_rate = 0.002
+    learning_rate = 0.01
     beta1 = 0.5
 
     # Setup Adam optimizers for both G and D
