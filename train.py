@@ -109,7 +109,7 @@ def train(dataloader, num_epochs=5):
             # Output training stats
             if i % 3 == 0:
                 print('[%d/%d][%d/%d]\tLoss_D: %.4f\tLoss_G: %.4f\tD(x): %.4f\tD(G(z)): %.4f / %.4f'
-                      % (epoch, num_epochs, i, len(dataloader),
+                      % (epoch+1, num_epochs, i+1, len(dataloader),
                          errD.item(), errG.item(), D_x, D_G_z1, D_G_z2))
 
             # Save Losses for plotting later
@@ -126,12 +126,12 @@ def train(dataloader, num_epochs=5):
             iters += 1
             
     print("finished")
-    for i in img_list:
-        plt.imshow(np.transpose(img_list[i][-1], (1, 2, 0)))
-        plt.savefig('output/generator_'+i+'.png')
+    # for i in img_list:
+    #     plt.imshow(np.transpose(img_list[i][-1], (1, 2, 0)))
+    #     plt.savefig('output/generator_'+i+'.png')
     
     # print(img_list[-1][-1].size())
-    # plt.imshow(np.transpose(img_list[-1][-1],(1,2,0)))
+    plt.imshow(np.transpose(img_list[-1][-1],(1,2,0)))
     # print(img_list[-1][-1].size())
     # plt.plot(np.transpose(img_list[-1],(1,2,0)))
-    # plt.savefig('fake_image_job.png')
+    plt.savefig('fake_image_job.png')
