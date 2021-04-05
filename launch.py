@@ -13,7 +13,7 @@ def show_image(data_, labels_, batch, idx):
 
 if __name__ == '__main__':
     batch_size = 75
-    dataloader, data, labels, num_images = load_data('data', batch_size=batch_size, num_workers=8)  # all data, divided into batches
+    dataloader, data, labels, num_images = load_data('drawings', batch_size=batch_size, num_workers=8)  # all data, divided into batches
     # show_image(data, labels, 0, 0)
     print('data loaded')
 

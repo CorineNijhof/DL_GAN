@@ -12,7 +12,7 @@ from run_nets import weights_init
 NGPU = 1
 
 
-def train(dataloader, num_epochs=3):
+def train(dataloader, num_epochs=500):
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
     # Create the nets
@@ -125,12 +125,12 @@ def train(dataloader, num_epochs=3):
             iters += 1
             
     print("finished")
-    for i in img_list:
-        print("x")
+    # for i in img_list:
+    #     print("x")
     # print(img_list)
     
-    print(img_list[-1][-1].size())
+    # print(img_list[-1][-1].size())
     plt.imshow(np.transpose(img_list[-1][-1],(1,2,0)))
-    print(img_list[-1][-1].size())
+    # print(img_list[-1][-1].size())
     # plt.plot(np.transpose(img_list[-1],(1,2,0)))
-    plt.savefig('fake_image_2.png')
+    plt.savefig('fake_image_job.png')
