@@ -107,7 +107,7 @@ def train(dataloader, num_epochs=5):
             optimizerG.step()
 
             # Output training stats
-            if i % 50 == 0:
+            if i % 3 == 0:
                 print('[%d/%d][%d/%d]\tLoss_D: %.4f\tLoss_G: %.4f\tD(x): %.4f\tD(G(z)): %.4f / %.4f'
                       % (epoch, num_epochs, i, len(dataloader),
                          errD.item(), errG.item(), D_x, D_G_z1, D_G_z2))
@@ -117,7 +117,7 @@ def train(dataloader, num_epochs=5):
             D_losses.append(errD.item())
 
             # Check how the generator is doing by saving its output on fixed_noise
-            if (iters % 500 == 0) or ((epoch == num_epochs - 1) and (i == len(dataloader) - 1)):
+            if (iters % 27 == 0) or ((epoch == num_epochs - 1) and (i == len(dataloader) - 1)):
                 with torch.no_grad():
                     fake = generator(fixed_noise).detach().cpu()
                 # img_list.append(vutils.make_grid(fake, padding=2, normalize=True))
@@ -126,12 +126,13 @@ def train(dataloader, num_epochs=5):
             iters += 1
             
     print("finished")
-    # for i in img_list:
-    #     print("x")
-    # print(img_list)
+    for i in img_list:
+        plt.imshow(np.transpose(img_list[i], (1, 2, 0)))
+        plt.savefig('generator_'+i+'.png')
+    print(img_list)
     
     # print(img_list[-1][-1].size())
-    plt.imshow(np.transpose(img_list[-1][-1],(1,2,0)))
+    # plt.imshow(np.transpose(img_list[-1][-1],(1,2,0)))
     # print(img_list[-1][-1].size())
     # plt.plot(np.transpose(img_list[-1],(1,2,0)))
-    plt.savefig('fake_image_job.png')
+    # plt.savefig('fake_image_job.png')
