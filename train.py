@@ -43,11 +43,11 @@ def train(dataloader, num_epochs=5):
     fake_label = 0.
 
     # learning_rate = 0.0002
-    learning_rate = 0.01
+    learning_rate = 0.002
     beta1 = 0.5
 
     # Setup Adam optimizers for both G and D
-    optimizerD = optim.Adam(discriminator.parameters(), lr=learning_rate, betas=(beta1, 0.999))
+    optimizerD = optim.SGD(discriminator.parameters(), lr=learning_rate)
     optimizerG = optim.Adam(generator.parameters(), lr=learning_rate, betas=(beta1, 0.999))
 
     # Lists to keep track of progress
