@@ -108,7 +108,7 @@ def train(dataloader, num_epochs=5):
 
             # Output training stats
             if i % 3 == 0:
-                print('[%d/%d][%d/%d]\tLoss_D: %.4f\tLoss_G: %.4f\tD(x): %.4f\tD(G(z)): %.4f / %.4f'
+                print('[%d/%d][%d/%d]\t\tLoss_D: %.4f\tLoss_G: %.4f\tD(x): %.4f\tD(G(z)): %.4f / %.4f'
                       % (epoch+1, num_epochs, i+1, len(dataloader),
                          errD.item(), errG.item(), D_x, D_G_z1, D_G_z2))
 
