@@ -4,15 +4,15 @@ import torch.optim as optim
 import torchvision.utils as vutils
 import numpy as np
 import matplotlib.pyplot as plt
-from nets import Generator, Discriminator, NZ
+from nets import Generator, Discriminator, nz
 from run_nets import weights_init
 
 
 # Number of GPUs available. Use 0 for CPU mode.
-NGPU = 1
+ngpu = 1
 
 
-def train(dataloader, num_epochs=500):
+def train(dataloader, num_epochs=5):
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
     # Create the nets
@@ -36,13 +36,14 @@ def train(dataloader, num_epochs=500):
 
     # Create batch of latent vectors that we will use to visualize
     #  the progression of the generator
-    fixed_noise = torch.randn(64, NZ, 1, 1, device=device)
+    fixed_noise = torch.randn(64, nz, 1, 1, device=device)
 
     # Establish convention for real and fake labels during training
     real_label = 1.
     fake_label = 0.
 
-    learning_rate = 0.0002
+    # learning_rate = 0.0002
+    learning_rate = 0.01
     beta1 = 0.5
 
     # Setup Adam optimizers for both G and D
@@ -74,7 +75,7 @@ def train(dataloader, num_epochs=500):
 
             ## Train with all-fake batch
             # Generate batch of latent vectors
-            noise = torch.randn(b_size, NZ, 1, 1, device=device)
+            noise = torch.randn(b_size, nz, 1, 1, device=device)
             # Generate fake image batch with G
             fake = generator(noise)
             label.fill_(fake_label)
@@ -106,7 +107,7 @@ def train(dataloader, num_epochs=500):
             optimizerG.step()
 
             # Output training stats
-            if i % 20 == 0:
+            if i % 50 == 0:
                 print('[%d/%d][%d/%d]\tLoss_D: %.4f\tLoss_G: %.4f\tD(x): %.4f\tD(G(z)): %.4f / %.4f'
                       % (epoch, num_epochs, i, len(dataloader),
                          errD.item(), errG.item(), D_x, D_G_z1, D_G_z2))
@@ -116,7 +117,7 @@ def train(dataloader, num_epochs=500):
             D_losses.append(errD.item())
 
             # Check how the generator is doing by saving its output on fixed_noise
-            if (iters % 500 == 0) or ((epoch == num_epochs - 1) and (i ==len(dataloader) - 1)):
+            if (iters % 500 == 0) or ((epoch == num_epochs - 1) and (i == len(dataloader) - 1)):
                 with torch.no_grad():
                     fake = generator(fixed_noise).detach().cpu()
                 # img_list.append(vutils.make_grid(fake, padding=2, normalize=True))

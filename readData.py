@@ -17,7 +17,7 @@ def load_data(path, batch_size=25, num_workers=8):
     labels = []
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     for image_batch, label_batch in dataloader:
-        # transfer data to gpu
+        # transfer drawings to gpu
         image_batch = image_batch.to(device)
         label_batch = label_batch.to(device)
 

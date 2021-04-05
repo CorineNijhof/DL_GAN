@@ -1,16 +1,13 @@
 import torch.nn as nn
 
 # Number of channels in the training images. For color images this is 3
-NC = 3
 nc = 3
 # Size of z latent vector (i.e. size of generator input)
-NZ = 200
 nz = 200
 # Size of feature maps in generator
-NGF = 128
 ngf = 128
 # Size of feature maps in discriminator
-NDF = 128
+ndf = 128
 
 class Generator(nn.Module):
     def __init__(self):
@@ -83,26 +80,26 @@ class Discriminator(nn.Module):
 
         self.layers = nn.Sequential(
             # input is (NC) x 512 x 512
-            nn.Conv2d(in_channels=NC, out_channels=NDF, kernel_size=4, stride=2, padding=1, bias=False),
+            nn.Conv2d(in_channels=nc, out_channels=ndf, kernel_size=4, stride=2, padding=1, bias=False),
             nn.LeakyReLU(0.2, inplace=True),
             # state size. (NDF) x ? x ?
-            nn.Conv2d(NDF, NDF * 2, 4, 2, 1, bias=False),
-            nn.BatchNorm2d(NDF * 2),
+            nn.Conv2d(ndf, ndf * 2, 4, 2, 1, bias=False),
+            nn.BatchNorm2d(ndf * 2),
             nn.LeakyReLU(0.2, inplace=True),
             # state size. (NDF*2) x ? x ?
 
-            nn.Conv2d(NDF * 2, NDF * 4, 4, 2, 1, bias=False),
-            nn.BatchNorm2d(NDF * 4),
+            nn.Conv2d(ndf * 2, ndf * 4, 4, 2, 1, bias=False),
+            nn.BatchNorm2d(ndf * 4),
             nn.LeakyReLU(0.2, inplace=True),
             # state size. (NDF*4) x ? x ?
-            nn.Conv2d(NDF * 4, NDF * 8, 4, 2, 1, bias=False),
-            nn.BatchNorm2d(NDF * 8),
+            nn.Conv2d(ndf * 4, ndf * 8, 4, 2, 1, bias=False),
+            nn.BatchNorm2d(ndf * 8),
             nn.LeakyReLU(0.2, inplace=True),
              # state size. (NDF*8) x ? x ?
-            nn.Conv2d(NDF * 8, NDF * 16, 4, 2, 1, bias=False), #TOEGEVOEGD
-            nn.BatchNorm2d(NDF * 16),
+            nn.Conv2d(ndf * 8, ndf * 16, 4, 2, 1, bias=False), #TOEGEVOEGD
+            nn.BatchNorm2d(ndf * 16),
             nn.LeakyReLU(0.2, inplace=True),
-            nn.Conv2d(NDF * 16, 1, 4, 1, 0, bias=False), 
+            nn.Conv2d(ndf * 16, 1, 4, 1, 0, bias=False),
             nn.Sigmoid()
         )
 

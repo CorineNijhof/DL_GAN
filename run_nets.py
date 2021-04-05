@@ -1,4 +1,4 @@
-from nets import Generator, Discriminator, NC, NZ, NGF, NDF
+from nets import Generator, Discriminator, nc, nz, ngf, ndf
 from torch.optim import Adam
 import torch.nn as nn
 import torch
@@ -36,7 +36,7 @@ def run_generator():
 
     # Apply the weights_init function to randomly initialize all weights
     #  to mean=0, stdev=0.2.
-    fixed_noise = torch.randn(1, NZ, 1, 1, device=device)
+    fixed_noise = torch.randn(1, nz, 1, 1, device=device)
     # # fixed_noise = torch.randn(64, 64, 1, 1, device=device)
     # optimizer_generator = Adam(generator.parameters())
     # criterion = nn.BCELoss()
