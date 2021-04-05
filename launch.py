@@ -14,7 +14,7 @@ def show_image(data_, labels_, batch, idx):
 if __name__ == '__main__':
     batch_size = 75
     # all drawings, divided into batches
-    dataloader, data, labels, num_images = load_data('drawings', batch_size=batch_size, num_workers=8)
+    dataloader, data, labels, num_images = load_data('drawings', batch_size=batch_size, num_workers=6)
     # show_image(drawings, labels, 0, 0)
     print('drawings loaded')
 

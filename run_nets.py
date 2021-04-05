@@ -49,7 +49,6 @@ def run_generator():
     # return show_image(generator, fixed_noise)
 
 
-
 def run_discriminator(input):
     # torch.cuda.is_available = lambda : False
 

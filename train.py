@@ -36,7 +36,7 @@ def train(dataloader, num_epochs=5):
 
     # Create batch of latent vectors that we will use to visualize
     #  the progression of the generator
-    fixed_noise = torch.randn(64, nz, 1, 1, device=device)
+    fixed_noise = torch.randn(128, nz, 1, 1, device=device)
 
     # Establish convention for real and fake labels during training
     real_label = 1.
