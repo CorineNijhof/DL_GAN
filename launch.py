@@ -18,8 +18,8 @@ if __name__ == '__main__':
     # show_image(drawings, labels, 0, 0)
     print('drawings loaded')
 
-    image = run_generator()
-    print(image.size())
-    run_discriminator(image)
+    # image = run_generator()
+    # print(image.size())
+    # run_discriminator(image)
 
-    # train(dataloader, num_epochs=10)
+    train(dataloader, num_epochs=1000)
