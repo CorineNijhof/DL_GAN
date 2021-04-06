@@ -22,4 +22,4 @@ if __name__ == '__main__':
     # print(image.size())
     # run_discriminator(image)
 
-    train(dataloader, num_epochs=1000)
+    train(dataloader, num_epochs=200)
