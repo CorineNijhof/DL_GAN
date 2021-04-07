@@ -1,3 +1,4 @@
+import sys
 from readData import load_data
 import matplotlib.pyplot as plt
 from train import train
@@ -11,14 +12,23 @@ def show_image(data_, labels_, batch, idx):
 
 
 if __name__ == '__main__':
+    path = 'paintings'
+    net = 'default'
+    if len(sys.argv) > 1:
+        path = sys.argv[1]
+    if len(sys.argv) > 2:
+        net = sys.argv[2]
+
+    # only testing if the networks handle the input correctly
+    if path == 'test':
+        from test_nets import test_generator, test_discriminator
+        image = test_generator(net)
+        test_discriminator(image, net)
+        exit(-1)
+
+    # load the data in batches
     batch_size = 64
-    # all drawings, divided into batches
-    dataloader, data, labels, num_images = load_data('data', batch_size=batch_size, num_workers=8)
-    # show_image(drawings, labels, 0, 0)
+    dataloader, num_images = load_data(path=path, batch_size=batch_size, num_workers=8)
     print('data loaded')
 
-    # image = run_generator()
-    # print(image.size())
-    # run_discriminator(image)
-
-    train(dataloader, num_epochs=1)
+    train(dataloader, num_epochs=100, net=net)

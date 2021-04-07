@@ -10,6 +10,7 @@ from nets import Generator, Discriminator, nz
 # Number of GPUs available. Use 0 for CPU mode.
 ngpu = 1
 
+
 def weights_init(m):
     classname = m.__class__.__name__
     if classname.find('Conv') != -1:
@@ -19,12 +20,12 @@ def weights_init(m):
         nn.init.constant_(m.bias.data, 0)
 
 
-def train(dataloader, num_epochs):
+def train(dataloader, num_epochs, net):
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
     # Create the nets
-    generator = Generator().to(device)
-    discriminator = Discriminator().to(device)
+    generator = Generator(net).to(device)
+    discriminator = Discriminator(net).to(device)
 
     # # Handle multi-gpu if desired
     # if (device.type == 'cuda') and (ngpu > 1):
