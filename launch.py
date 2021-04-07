@@ -31,4 +31,4 @@ if __name__ == '__main__':
     dataloader, num_images = load_data(path=path, batch_size=batch_size, num_workers=6)
     print('data loaded')
 
-    train(dataloader, num_epochs=1, net=net)
+    train(dataloader, num_epochs=150, net=net)

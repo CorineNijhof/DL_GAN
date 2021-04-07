@@ -13,6 +13,6 @@ source /data/s2967383/.envs/gan_env/bin/activate
 #python3 launch.py test VANGAN
 #python3 launch.py test default
 python3 launch.py paintings VANGAN
-#python3 launch.py paintings default
+python3 launch.py paintings default
 #python3 launch.py paris VANGAN
 #python3 launch.py paris default
