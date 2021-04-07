@@ -5,14 +5,21 @@ import torchvision.utils as vutils
 import numpy as np
 import matplotlib.pyplot as plt
 from nets import Generator, Discriminator, nz
-from run_nets import weights_init
 
 
 # Number of GPUs available. Use 0 for CPU mode.
 ngpu = 1
 
+def weights_init(m):
+    classname = m.__class__.__name__
+    if classname.find('Conv') != -1:
+        nn.init.normal_(m.weight.data, 0.0, 0.02)
+    elif classname.find('BatchNorm') != -1:
+        nn.init.normal_(m.weight.data, 1.0, 0.02)
+        nn.init.constant_(m.bias.data, 0)
 
-def train(dataloader, num_epochs=5):
+
+def train(dataloader, num_epochs):
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
     # Create the nets
@@ -36,18 +43,18 @@ def train(dataloader, num_epochs=5):
 
     # Create batch of latent vectors that we will use to visualize
     #  the progression of the generator
-    fixed_noise = torch.randn(128, nz, 1, 1, device=device)
+    fixed_noise = torch.randn(64, nz, 1, 1, device=device)
 
     # Establish convention for real and fake labels during training
     real_label = 1.
     fake_label = 0.
 
-    # learning_rate = 0.0002
-    learning_rate = 0.01
+    learning_rate = 0.0002
+    # learning_rate = 0.01
     beta1 = 0.5
 
     # Setup Adam optimizers for both G and D
-    optimizerD = optim.SGD(discriminator.parameters(), lr=learning_rate)
+    optimizerD = optim.Adam(discriminator.parameters(), lr=learning_rate, betas=(beta1, 0.999))
     optimizerG = optim.Adam(generator.parameters(), lr=learning_rate, betas=(beta1, 0.999))
 
     # Lists to keep track of progress
@@ -120,8 +127,7 @@ def train(dataloader, num_epochs=5):
             if (iters % 27 == 0) or ((epoch == num_epochs - 1) and (i == len(dataloader) - 1)):
                 with torch.no_grad():
                     fake = generator(fixed_noise).detach().cpu()
-                # img_list.append(vutils.make_grid(fake, padding=2, normalize=True))
-                img_list.append(fake)
+                img_list.append(vutils.make_grid(fake, padding=2, normalize=True))
 
             iters += 1
             
@@ -131,7 +137,7 @@ def train(dataloader, num_epochs=5):
     #     plt.savefig('output/generator_'+i+'.png')
     
     # print(img_list[-1][-1].size())
-    plt.imshow(np.transpose(img_list[-1][-1],(1,2,0)))
+    plt.imshow(np.transpose(img_list[-1],(1,2,0)))
     # print(img_list[-1][-1].size())
     # plt.plot(np.transpose(img_list[-1],(1,2,0)))
-    plt.savefig('fake_image_job.png')
+    plt.savefig('fake_image.png')

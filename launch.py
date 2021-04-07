@@ -1,6 +1,5 @@
 from readData import load_data
 import matplotlib.pyplot as plt
-from run_nets import run_generator, run_discriminator
 from train import train
 
 
@@ -12,14 +11,14 @@ def show_image(data_, labels_, batch, idx):
 
 
 if __name__ == '__main__':
-    batch_size = 75
+    batch_size = 64
     # all drawings, divided into batches
-    dataloader, data, labels, num_images = load_data('drawings', batch_size=batch_size, num_workers=6)
+    dataloader, data, labels, num_images = load_data('data', batch_size=batch_size, num_workers=8)
     # show_image(drawings, labels, 0, 0)
-    print('drawings loaded')
+    print('data loaded')
 
     # image = run_generator()
     # print(image.size())
     # run_discriminator(image)
 
-    train(dataloader, num_epochs=200)
+    train(dataloader, num_epochs=1)
