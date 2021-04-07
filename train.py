@@ -133,12 +133,11 @@ def train(dataloader, num_epochs, net):
             iters += 1
             
     print("finished")
-    # for i in img_list:
-    #     plt.imshow(np.transpose(img_list[i][-1], (1, 2, 0)))
-    #     plt.savefig('output/generator_'+i+'.png')
+    i=1
+    for grid in img_list:
+        plt.imshow(np.transpose(grid, (1, 2, 0)))
+        plt.savefig('output/generator_'+str(i)+'.png')
+        i += 1
     
-    # print(img_list[-1][-1].size())
     plt.imshow(np.transpose(img_list[-1],(1,2,0)))
-    # print(img_list[-1][-1].size())
-    # plt.plot(np.transpose(img_list[-1],(1,2,0)))
     plt.savefig('fake_image.png')

@@ -28,7 +28,7 @@ if __name__ == '__main__':
 
     # load the data in batches
     batch_size = 64
-    dataloader, num_images = load_data(path=path, batch_size=batch_size, num_workers=8)
+    dataloader, num_images = load_data(path=path, batch_size=batch_size, num_workers=6)
     print('data loaded')
 
-    train(dataloader, num_epochs=100, net=net)
+    train(dataloader, num_epochs=1, net=net)
