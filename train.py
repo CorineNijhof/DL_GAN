@@ -133,11 +133,9 @@ def train(dataloader, num_epochs, net, run_settings):
             iters += 1
             
     print("finished")
-    i=1
-    for grid in img_list:
-        plt.imshow(np.transpose(grid, (1, 2, 0)))
-        plt.savefig('output/'+run_settings+'/'+str(i).zfill(3)+'.png')
-        i += 1
+
+    plt.imshow(np.transpose(img_list[-1], (1, 2, 0)))
+    plt.savefig('generated_images_grid.png')
 
     plt.figure(figsize=(10, 5))
     plt.title("Generator and Discriminator Loss During Training")
@@ -147,6 +145,3 @@ def train(dataloader, num_epochs, net, run_settings):
     plt.ylabel("Loss")
     plt.legend()
     plt.savefig('loss_graph_'+run_settings+'.png')
-
-    # plt.imshow(np.transpose(img_list[-1],(1,2,0)))
-    # plt.savefig('fake_image.png')
