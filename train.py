@@ -20,7 +20,7 @@ def weights_init(m):
         nn.init.constant_(m.bias.data, 0)
 
 
-def train(dataloader, num_epochs, net):
+def train(dataloader, num_epochs, net, run_settings):
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
     # Create the nets
@@ -136,8 +136,17 @@ def train(dataloader, num_epochs, net):
     i=1
     for grid in img_list:
         plt.imshow(np.transpose(grid, (1, 2, 0)))
-        plt.savefig('output/fake_'+str(i)+'.png')
+        plt.savefig('output/'+run_settings+'/'+str(i).zfill(3)+'.png')
         i += 1
-    
+
+    plt.figure(figsize=(10, 5))
+    plt.title("Generator and Discriminator Loss During Training")
+    plt.plot(G_losses, label="G")
+    plt.plot(D_losses, label="D")
+    plt.xlabel("Iterations")
+    plt.ylabel("Loss")
+    plt.legend()
+    plt.savefig('loss_graph_'+run_settings+'.png')
+
     # plt.imshow(np.transpose(img_list[-1],(1,2,0)))
     # plt.savefig('fake_image.png')

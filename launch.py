@@ -24,6 +24,8 @@ if __name__ == '__main__':
         from test_nets import test_generator, test_discriminator
         image = test_generator(net)
         test_discriminator(image, net)
+        plt.imshow(image.detach().squeeze().permute(1, 2, 0))
+        plt.show()
         exit(-1)
 
     # load the data in batches
@@ -31,4 +33,8 @@ if __name__ == '__main__':
     dataloader, num_images = load_data(path=path, batch_size=batch_size, num_workers=6)
     print('data loaded')
 
-    train(dataloader, num_epochs=150, net=net)
+    if net == 'VANGAN':
+        num_epochs = 500
+    else:
+        num_epochs = 200
+    train(dataloader, num_epochs=num_epochs, net=net, run_settings=path+'_'+net)
