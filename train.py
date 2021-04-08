@@ -127,7 +127,7 @@ def train(dataloader, num_epochs, net, run_settings, learning_rate=0.0002, optim
             D_losses.append(errD.item())
 
             # Check how the generator is doing by saving its output on fixed_noise
-            if (iters % len(dataloader) == 0) or ((epoch == num_epochs - 1) and (i == len(dataloader) - 1)):
+            if (iters % (len(dataloader)*50) == 0) or ((epoch == num_epochs - 1) and (i == len(dataloader) - 1)):
                 with torch.no_grad():
                     fake = generator(fixed_noise).detach().cpu()
                 img_list.append(vutils.make_grid(fake, padding=2, normalize=True))
@@ -135,6 +135,10 @@ def train(dataloader, num_epochs, net, run_settings, learning_rate=0.0002, optim
             iters += 1
 
     print("finished")
+
+    for i in range(len(img_list)):
+        plt.imshow(np.transpose(img_list[i], (1, 2, 0)))
+        plt.savefig('generated_images_' + str(i) + '.png')
 
     plt.imshow(np.transpose(img_list[-1], (1, 2, 0)))
     plt.savefig('generated_images_' + run_settings + '.png')

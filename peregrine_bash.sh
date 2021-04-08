@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#SBATCH --time=02:30:00
+#SBATCH --time=06:00:00
 #SBATCH --partition=gpu
 #SBATCH --gres=gpu:v100:1
 
@@ -12,11 +12,13 @@ source /data/s2967383/.envs/gan_env/bin/activate
 
 #python3 launch.py test default
 #python3 launch.py test VANGAN
-python3 launch.py data default 0.0002 Adam
-python3 launch.py drawings default 0.0002 Adam
+#python3 launch.py data default 0.0002 Adam
+#python3 launch.py drawings default 0.0002 Adam
 #python3 launch.py paris default 0.0002 Adam
 #python3 launch.py paintings default 0.0002 Adam
 #python3 launch.py paintings VANGAN 0.0002 Adam
+python3 launch.py data VANGAN 0.0002 Adam 550
+python3 launch.py drawings VANGAN 0.0002 Adam 250
 #python3 launch.py paintings default 0.01 Adam
 #python3 launch.py paintings VANGAN 0.01 Adam
 #python3 launch.py paintings default 0.0002 SGD

@@ -107,6 +107,7 @@ class Discriminator(nn.Module):
             self.layers = nn.Sequential(
                 # input is (nc) x 64 x 64
                 nn.Conv2d(nc, ndf, 4, 2, 1, bias=False),
+                nn.BatchNorm2d(ndf * 2),
                 nn.LeakyReLU(0.2, inplace=True),
                 # state size. (ndf) x 32 x 32
                 nn.Conv2d(ndf, ndf * 2, 4, 2, 1, bias=False),
