@@ -6,7 +6,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 from nets import Generator, Discriminator, nz
 
-
 # Number of GPUs available. Use 0 for CPU mode.
 ngpu = 1
 
@@ -20,7 +19,7 @@ def weights_init(m):
         nn.init.constant_(m.bias.data, 0)
 
 
-def train(dataloader, num_epochs, net, run_settings):
+def train(dataloader, num_epochs, net, run_settings, learning_rate=0.0002, optimizerD='Adam'):
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
     # Create the nets
@@ -50,12 +49,15 @@ def train(dataloader, num_epochs, net, run_settings):
     real_label = 1.
     fake_label = 0.
 
-    learning_rate = 0.0002
+    # learning_rate = 0.0002
     # learning_rate = 0.01
     beta1 = 0.5
 
     # Setup Adam optimizers for both G and D
-    optimizerD = optim.Adam(discriminator.parameters(), lr=learning_rate, betas=(beta1, 0.999))
+    if optimizerD == 'SGD':
+        optimizerD = optim.SGD(discriminator.parameters(), lr=learning_rate)
+    else:
+        optimizerD = optim.Adam(discriminator.parameters(), lr=learning_rate, betas=(beta1, 0.999))
     optimizerG = optim.Adam(generator.parameters(), lr=learning_rate, betas=(beta1, 0.999))
 
     # Lists to keep track of progress
@@ -117,7 +119,7 @@ def train(dataloader, num_epochs, net, run_settings):
             # Output training stats
             if i % 3 == 0:
                 print('[%d/%d][%d/%d]\t\tLoss_D: %.4f\tLoss_G: %.4f\tD(x): %.4f\tD(G(z)): %.4f / %.4f'
-                      % (epoch+1, num_epochs, i+1, len(dataloader),
+                      % (epoch + 1, num_epochs, i + 1, len(dataloader),
                          errD.item(), errG.item(), D_x, D_G_z1, D_G_z2))
 
             # Save Losses for plotting later
@@ -131,11 +133,11 @@ def train(dataloader, num_epochs, net, run_settings):
                 img_list.append(vutils.make_grid(fake, padding=2, normalize=True))
 
             iters += 1
-            
+
     print("finished")
 
     plt.imshow(np.transpose(img_list[-1], (1, 2, 0)))
-    plt.savefig('generated_images_'+run_settings+'.png')
+    plt.savefig('generated_images_' + run_settings + '.png')
 
     plt.figure(figsize=(10, 5))
     plt.title("Generator and Discriminator Loss During Training")
@@ -144,4 +146,4 @@ def train(dataloader, num_epochs, net, run_settings):
     plt.xlabel("Iterations")
     plt.ylabel("Loss")
     plt.legend()
-    plt.savefig('loss_graph_'+run_settings+'.png')
+    plt.savefig('loss_graph_' + run_settings + '.png')
