@@ -25,15 +25,9 @@ if __name__ == '__main__':
     if len(sys.argv) > 4:
         optimizerD = sys.argv[4]
 
-    if net == 'VANGAN':
-        num_epochs = 550
-    else:
-        num_epochs = 250
-
     # only testing if the networks handle the input correctly
     if path == 'test':
         from test_nets import test_generator, test_discriminator
-
         image = test_generator(net)
         test_discriminator(image, net)
         plt.imshow(image.detach().squeeze().permute(1, 2, 0))
@@ -44,6 +38,11 @@ if __name__ == '__main__':
     batch_size = 64
     dataloader, num_images = load_data(path=path, batch_size=batch_size, num_workers=8)
     print('data loaded')
+
+    if net == 'VANGAN':
+        num_epochs = 550
+    else:
+        num_epochs = 250
 
     train(dataloader, num_epochs=num_epochs, net=net, learning_rate=lr, optimizerD=optimizerD,
           run_settings=path+'_'+net+'_'+str(lr)+'_'+optimizerD)
