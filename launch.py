@@ -36,6 +36,7 @@ if __name__ == '__main__':
     if path == 'test':
         from test_nets import test_generator, test_discriminator
         image = test_generator(net)
+        print(image.size())
         test_discriminator(image, net)
         plt.imshow(image.detach().squeeze().permute(1, 2, 0))
         plt.show()
