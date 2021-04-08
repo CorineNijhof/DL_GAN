@@ -7,7 +7,7 @@ nz = 100
 # Size of feature maps in generator
 ngf = 64
 # Size of feature maps in discriminator
-ndf = 32
+ndf = 64
 
 
 class Generator(nn.Module):
