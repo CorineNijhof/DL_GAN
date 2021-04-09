@@ -8,7 +8,7 @@ Requires:
 Python 3.8.6  
 numpy 1.20.2  
 torch 1.8.1  
-torchvision 0.9.1
+torchvision 0.9.1  
 matplotlib 3.4.1
 
 ## To run the program:
