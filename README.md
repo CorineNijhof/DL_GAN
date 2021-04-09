@@ -11,7 +11,7 @@ The command for running the code is
 python3 launch.py
 
 Additional parameters can be added in the following fixed order (first option is default):
-1. choose the dataset (data, choose your own directory containing a subset of the dataset)
+1. choose the dataset (data, choose your own directory containing a subset of the dataset, option 'test' tests if the networks are compatible)
 2. choose the network (default, default128, VANGAN)
 3. choose the learning rate (0.0002, any value possible)
 4. choose the optimizer for the discriminator (Adam, SGD)
