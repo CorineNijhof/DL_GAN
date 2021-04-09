@@ -132,7 +132,7 @@ class Discriminator(nn.Module):
     def __init__(self, net):
         super(Discriminator, self).__init__()
 
-        if net == 'default':
+        if net == 'default128':
             self.layers = nn.Sequential(
                 # input is (nc) x 128 x 128
 
