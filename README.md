@@ -1,6 +1,16 @@
 # DL_GAN
 A project for the University of Groningen course Deep Learning.
 
+## Setup
+
+Requires: 
+
+Python 3.8.6  
+numpy 1.20.2  
+torch 1.8.1  
+torchvision 0.9.1
+matplotlib 3.4.1
+
 ## To run the program:
 Download the dataset (https://www.kaggle.com/ipythonx/van-gogh-paintings)  
 extract dataset and rename to 'data'

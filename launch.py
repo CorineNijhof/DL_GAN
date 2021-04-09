@@ -12,7 +12,7 @@ def show_image(data_, labels_, batch, idx):
 
 
 if __name__ == '__main__':
-    path = 'paintings'
+    path = 'data'
     net = 'default'
     lr = 0.0002
     optimizerD = 'Adam'
@@ -44,7 +44,10 @@ if __name__ == '__main__':
 
     # load the data in batches
     batch_size = 64
-    dataloader, num_images = load_data(path=path, batch_size=batch_size, num_workers=8)
+    if net == 'default128':
+        dataloader, num_images = load_data(path=path, batch_size=batch_size, num_workers=8, size=128)
+    else:
+        dataloader, num_images = load_data(path=path, batch_size=batch_size, num_workers=8)
     print('data loaded')
 
     train(dataloader, num_epochs=num_epochs, net=net, learning_rate=lr, optimizerD=optimizerD,

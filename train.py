@@ -6,10 +6,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 from nets import Generator, Discriminator, nz
 
-# Number of GPUs available. Use 0 for CPU mode.
-ngpu = 1
-
-
 def weights_init(m):
     classname = m.__class__.__name__
     if classname.find('Conv') != -1:
@@ -26,17 +22,9 @@ def train(dataloader, num_epochs, net, run_settings, learning_rate=0.0002, optim
     generator = Generator(net).to(device)
     discriminator = Discriminator(net).to(device)
 
-    # # Handle multi-gpu if desired
-    # if (device.type == 'cuda') and (ngpu > 1):
-    #     netG = nn.DataParallel(generator, list(range(ngpu)))
-
     # Apply the weights_init function to randomly initialize all weights
     generator.apply(weights_init)
     discriminator.apply(weights_init)
-
-    # Print the model
-    # print(generator)
-    # print(discriminator)
 
     # Initialize BCELoss function
     criterion = nn.BCELoss()
@@ -49,8 +37,6 @@ def train(dataloader, num_epochs, net, run_settings, learning_rate=0.0002, optim
     real_label = 1.
     fake_label = 0.
 
-    # learning_rate = 0.0002
-    # learning_rate = 0.01
     beta1 = 0.5
 
     # Setup Adam optimizers for both G and D

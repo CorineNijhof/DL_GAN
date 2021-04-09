@@ -16,15 +16,10 @@ def show_image(generator, fixed_noise):
 
 
 def test_generator(net):
-    # torch.cuda.is_available = lambda : False
 
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     print(device)
     generator = Generator(net).to(device)
-
-    # Handle multi-gpu if desired
-    # if (device.type == 'cuda') and (ngpu > 1):
-    # netG = nn.DataParallel(netG, list(range(ngpu)))
 
     # Apply the weights_init function to randomly initialize all weights
     #  to mean=0, stdev=0.2.

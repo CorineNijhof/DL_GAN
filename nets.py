@@ -156,12 +156,12 @@ class Discriminator(nn.Module):
                 nn.LeakyReLU(0.2, inplace=True),
                 # state size. (ndf*4) x 8 x 8
 
-                nn.Conv2d(ndf * 8, ndf * 8, 4, 2, 1, bias=False),  # for 128x128
-                nn.BatchNorm2d(ndf * 8),
+                nn.Conv2d(ndf * 8, ndf * 16, 4, 2, 1, bias=False),  # for 128x128
+                nn.BatchNorm2d(ndf * 16),
                 nn.LeakyReLU(0.2, inplace=True),
                 ## state size. (ndf*8) x 4 x 4
 
-                nn.Conv2d(ndf * 8, 1, 4, 1, 0, bias=False),
+                nn.Conv2d(ndf * 16, 1, 4, 1, 0, bias=False),
                 nn.Sigmoid()
             )
         elif net == 'default':
